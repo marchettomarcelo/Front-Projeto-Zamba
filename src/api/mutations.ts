@@ -6,4 +6,15 @@ async function postPedidos({ name, age }: { name: string; age: string }) {
   return [{ id: 123, nome: name, age: age }];
 }
 
-export { postPedidos };
+async function deletePedido(id: number) {
+  console.log("Deletar pedido");
+  return [];
+}
+
+async function endPedido(id: number) {
+  console.log("Acabar com pedidos");
+
+  return [];
+}
+
+export { postPedidos, deletePedido, endPedido };
