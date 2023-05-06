@@ -1,10 +1,10 @@
 import { useQuery } from "react-query";
-import { getPedidos } from "~/api/querys";
+import { getViagens } from "~/api/querys";
 import BaseLayout from "~/components/Layout";
-import PedidoCard from "~/components/PedidoCard";
+import ViagemCard from "~/components/ViagemCard";
 
-function AdmPedidosPage() {
-  const { data, isLoading } = useQuery("pedidos", getPedidos);
+function AdmViagensPage() {
+  const { data, isLoading } = useQuery("viagens", getViagens);
 
   if (isLoading) {
     return <h1>Carregando...</h1>;
@@ -12,20 +12,15 @@ function AdmPedidosPage() {
 
   return (
     <BaseLayout>
-      <h1 className="text-xl">Pedidos Feitos</h1>
+      <h1 className="mb-2 text-center text-4xl font-bold text-gray-800">
+        Viagens
+      </h1>
 
-      {data?.map((pedido, idx) => {
-        return (
-          <PedidoCard
-            key={idx}
-            id={pedido.id}
-            nome={pedido.nome}
-            valor={pedido.valor}
-          />
-        );
+      {data?.map((viagem: any, index: number) => {
+        return <ViagemCard viagem={viagem} key={index}/>;
       })}
     </BaseLayout>
   );
 }
 
-export default AdmPedidosPage;
+export default AdmViagensPage;

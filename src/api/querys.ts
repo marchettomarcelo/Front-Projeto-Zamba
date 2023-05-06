@@ -1,8 +1,13 @@
 import axios from "axios";
 
-async function getPedidos() {
-    // return axios.get("http://localhost:3000/pedidos");
-    return [{"id": 123, "nome": "João", "valor": 100.00}];
+async function getViagens() {
+  try {
+    const { data } = await axios.get("http://localhost:8080/api/viagem");
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
 }
 
-export { getPedidos };
+export { getViagens  };

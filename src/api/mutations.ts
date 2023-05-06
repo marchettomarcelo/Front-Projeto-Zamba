@@ -1,20 +1,41 @@
 import axios from "axios";
 
-async function postPedidos({ name, age }: { name: string; age: string }) {
-  // return axios.get("http://localhost:3000/pedidos");
-  console.log("bom dia");
-  return [{ id: 123, nome: name, age: age }];
+interface FormData {
+  origem: string;
+  destino: string;
+  data: Date;
+  valor: number;
+  distancia: number;
+  tempo: number;
+  status: number;
 }
 
-async function deletePedido(id: number) {
-  console.log("Deletar pedido");
-  return [];
+async function postViagem(values: FormData) {
+  try {
+    const response = await axios.post(
+      "http://localhost:8080/api/viagem",
+      values
+    );
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
 }
 
-async function endPedido(id: number) {
+async function deleteViagem(id: string) {
+  // make id a string
+
+  
+  const response = await axios.delete(`http://localhost:8080/api/viagem/${id}`);
+  console.log(response)
+  return response.data;
+}
+
+async function endViagem(id: string) {
   console.log("Acabar com pedidos");
 
   return [];
 }
 
-export { postPedidos, deletePedido, endPedido };
+export { postViagem, deleteViagem, endViagem };

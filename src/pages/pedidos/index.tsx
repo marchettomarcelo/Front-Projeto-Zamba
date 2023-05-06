@@ -1,32 +1,29 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
-
 import { useMutation, useQuery } from "react-query";
-
-import { postPedidos } from "~/api/mutations";
-
+import { postViagem } from "~/api/mutations";
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
-interface FormData {
-  name: string;
-  age: number;
-}
-
 const validationSchema = Yup.object({
-  name: Yup.string().required("Name is required"),
-  age: Yup.number()
-    .min(0, "Age must be greater than or equal to 0")
-    .required("Age is required"),
+  origem: Yup.string().required("Origem is required"),
+  destino: Yup.string().required("Destino is required"),
+  data: Yup.date().required("Data is required"),
+  valor: Yup.number()
+    .min(0, "Valor must be greater than or equal to 0")
+    .required("Valor is required"),
+  distancia: Yup.number()
+    .min(0, "Distancia must be greater than or equal to 0")
+    .required("Distancia is required"),
+  tempo: Yup.number()
+    .min(0, "Tempo must be greater than or equal to 0")
+    .required("Tempo is required"),
+  status: Yup.number().required("Status is required"),
 });
 
 const Home: NextPage = () => {
-  // const { data, isLoading, isError } = useQuery("pedidos", getPedidos);
-
-  // const mutation = useMutation(postPedidos({nome: "marcelo", valor: 15}));
-  const mutation = useMutation(postPedidos);
+  const mutation = useMutation(postViagem);
 
   return (
     <>
@@ -37,13 +34,24 @@ const Home: NextPage = () => {
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b ">
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-          <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-            Zambas front
+          <h1 className="text-5xl font-extrabold tracking-tight text-black sm:text-[5rem]">
+            Chefes do Kazambastão
           </h1>
-          <div className="mb-4 w-1/3 rounded bg-white px-8 pb-8 pt-6 shadow-md">
-            <h1 className="mb-6 text-2xl">Form</h1>
+          <div className="mb-4 w-2/3 rounded border bg-white px-8 pb-8 pt-6 shadow-lg">
+            <h1 className="mb-6 text-2xl font-bold tracking-tight">
+              Criar Pedido:
+            </h1>
             <Formik
-              initialValues={{ name: "", age: "" }}
+              initialValues={{
+                origem: "",
+                destino: "",
+                data: new Date(),
+                valor: 0,
+                distancia: 0,
+                tempo: 0,
+                status: 0,
+                identifier: "",
+              }}
               validationSchema={validationSchema}
               onSubmit={(values, actions) => {
                 mutation.mutate(values);
@@ -54,57 +62,155 @@ const Home: NextPage = () => {
                 <Form className="flex flex-col">
                   <div className="mb-4">
                     <label
-                      htmlFor="name"
+                      htmlFor="origem"
                       className="mb-2 block text-sm font-bold text-gray-700"
                     >
-                      Name:
+                      Origem:
                     </label>
                     <Field
-                      id="name"
-                      name="name"
-                      placeholder="Name"
+                      id="origem"
+                      name="origem"
+                      placeholder="Origem"
                       className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
                     />
                     <ErrorMessage
-                      name="name"
+                      name="origem"
                       className="text-xs italic text-red-500"
                     />
                   </div>
 
                   <div className="mb-4">
                     <label
-                      htmlFor="age"
+                      htmlFor="destino"
                       className="mb-2 block text-sm font-bold text-gray-700"
                     >
-                      Age:
+                      Destino:
                     </label>
                     <Field
-                      id="age"
-                      name="age"
-                      placeholder="Age"
-                      type="number"
+                      id="destino"
+                      name="destino"
+                      placeholder="Destino"
                       className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
                     />
                     <ErrorMessage
-                      name="age"
+                      name="destino"
                       className="text-xs italic text-red-500"
                     />
                   </div>
 
-                  <div className="flex items-center justify-between">
+                  <div className="mb-4">
+                    <label
+                      htmlFor="data"
+                      className="mb-2 block text-sm font-bold text-gray-700"
+                    >
+                      Data:
+                    </label>
+                    <Field
+                      id="data"
+                      name="data"
+                      placeholder="Data"
+                      type="date"
+                      className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                    />
+                    <ErrorMessage
+                      name="data"
+                      className="text-xs italic text-red-500"
+                    />
+                  </div>
+
+                  <div className="mb-4">
+                    <label
+                      htmlFor="valor"
+                      className="mb-2 block text-sm font-bold text-gray-700"
+                    >
+                      Valor:
+                    </label>
+                    <Field
+                      id="valor"
+                      name="valor"
+                      placeholder="Valor"
+                      type="number"
+                      className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                    />
+                    <ErrorMessage
+                      name="valor"
+                      className="text-xs italic text-red-500"
+                    />
+                  </div>
+
+                  <div className="mb-4">
+                    <label
+                      htmlFor="distancia"
+                      className="mb-2 block text-sm font-bold text-gray-700"
+                    >
+                      Distancia:
+                    </label>
+                    <Field
+                      id="distancia"
+                      name="distancia"
+                      placeholder="Distancia"
+                      type="number"
+                      className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                    />
+                    <ErrorMessage
+                      name="distancia"
+                      className="text-xs italic text-red-500"
+                    />
+                  </div>
+
+                  <div className="mb-4">
+                    <label
+                      htmlFor="tempo"
+                      className="mb-2 block text-sm font-bold text-gray-700"
+                    >
+                      Tempo:
+                    </label>
+                    <Field
+                      id="tempo"
+                      name="tempo"
+                      placeholder="Tempo"
+                      type="number"
+                      className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                    />
+                    <ErrorMessage
+                      name="tempo"
+                      className="text-xs italic text-red-500"
+                    />
+                  </div>
+
+                  <div className="mb-4">
+                    <label
+                      htmlFor="status"
+                      className="mb-2 block text-sm font-bold text-gray-700"
+                    >
+                      Status:
+                    </label>
+                    <Field
+                      id="status"
+                      name="status"
+                      placeholder="Status"
+                      type="number"
+                      className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                    />
+                    <ErrorMessage
+                      name="status"
+                      className="text-xs italic text-red-500"
+                    />
+                  </div>
+
+                  <div className="flex items-center  justify-between">
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="focus:shadow-outline rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700 focus:outline-none"
+                      className="focus:shadow-outline rounded bg-gradient-to-r from-green-400 to-blue-500 px-4 py-2 font-bold text-white hover:from-pink-500 hover:to-yellow-500 focus:outline-none"
                     >
-                      Submit
+                      Criar Viajem
                     </button>
                   </div>
                 </Form>
               )}
             </Formik>
           </div>
-          Regenerate
         </div>
       </main>
     </>
