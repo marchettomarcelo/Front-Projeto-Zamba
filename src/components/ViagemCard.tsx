@@ -20,6 +20,7 @@ export default function ViagemCard({ viagem }: ViagemCardProps): JSX.Element {
 
   
   const deleteMutation = useMutation(deleteViagem);
+
   const endViagemMutation = useMutation(endViagem, {
     onSuccess(){
       const x = useQueryClient()
@@ -27,6 +28,7 @@ export default function ViagemCard({ viagem }: ViagemCardProps): JSX.Element {
       
     }
   });
+
 
   return (
     <div
