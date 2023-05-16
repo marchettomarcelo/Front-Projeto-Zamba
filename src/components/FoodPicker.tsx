@@ -1,44 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import FoodItems from "./FoodItems";
 import salada from "../images/salada.png";
 import burger from "../images/burger.png";
 
-type FoodType = "burger" | "salad";
-
-interface FoodQuantities {
-  [key: string]: number;
-}
-
-interface FoodPrices {
-  burger: number;
-  salad: number;
-}
-
-interface FoodPickerProps {
-  foodQuantities: FoodQuantities;
-  setFoodQuantities: (foodQuantities: FoodQuantities) => void;
-}
-
-export default function FoodPicker({
-  foodQuantities,
-  setFoodQuantities,
-}: FoodPickerProps) {
-  const foodPrices: FoodPrices = {
+export default function FoodPicker({ foodQuantities, setFoodQuantities }: any) {
+  const foodPrices = {
     burger: 5.99,
     salad: 8.99,
   };
 
-  const incrementFood = (food: FoodType) => {
+  const incrementFood = (food: string) => {
+    // @ts-ignore
     setFoodQuantities((prevQuantities) => ({
       ...prevQuantities,
       [food]: (prevQuantities[food] || 0) + 1,
     }));
   };
 
-  const decrementFood = (food: FoodType) => {
+  const decrementFood = (food: string) => {
+    // @ts-ignore
     if (foodQuantities[food] && foodQuantities[food] > 0) {
+      // @ts-ignore
       setFoodQuantities((prevQuantities) => ({
         ...prevQuantities,
+
+        // @ts-ignore
         [food]: prevQuantities[food] - 1,
       }));
     }
@@ -47,6 +33,7 @@ export default function FoodPicker({
   const calculateTotalPrice = () => {
     let total = 0;
     for (const food in foodQuantities) {
+      // @ts-ignore
       total += foodQuantities[food] * foodPrices[food];
     }
     return total.toFixed(2);
@@ -62,7 +49,7 @@ export default function FoodPicker({
           price={foodPrices.burger}
           increment={() => incrementFood("burger")}
           decrement={() => decrementFood("burger")}
-        />
+          />
 
         <FoodItems
           image={salada}
