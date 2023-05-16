@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { useQuery } from "react-query";
 import { getViagens } from "~/api/querys";
 import BaseLayout from "~/components/Layout";
@@ -17,7 +18,7 @@ function AdmViagensPage() {
       </h1>
 
       {data?.map((viagem: any, index: number) => {
-        return <ViagemCard viagem={viagem} key={index}/>;
+        return <ViagemCard viagem={viagem} key={index} />;
       })}
     </BaseLayout>
   );
