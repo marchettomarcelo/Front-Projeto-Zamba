@@ -1,13 +1,8 @@
 import axios from "axios";
 
 interface FormData {
-  origem: string;
   destino: string;
-  data: Date;
   valor: number;
-  distancia: number;
-  tempo: number;
-  status: number;
 }
 
 
@@ -15,10 +10,20 @@ interface FormData {
 const url = "http://localhost:8080/api/viagem"
 
 async function postViagem(values: FormData) {
+
+  const body_request = {
+    "destino": values.destino,
+    "valor": values.valor,
+    "origem": "Rua Quatá 200",
+    "distancia": 22,
+    "tempo": 30,
+    "status": 1,
+  }
+
   try {
     const response = await axios.post(
       url,
-      values
+      body_request
     );
     console.log(response.data);
     return response.data;

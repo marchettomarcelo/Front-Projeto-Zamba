@@ -2,29 +2,31 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import { useMutation, useQuery } from "react-query";
 import { postViagem } from "~/api/mutations";
-import React from "react";
+import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import FoodPicker from "~/components/FoodPicker";
 
 const validationSchema = Yup.object({
-  origem: Yup.string().required("Origem is required"),
+  
   destino: Yup.string().required("Destino is required"),
-  data: Yup.date().required("Data is required"),
-  valor: Yup.number()
-    .min(0, "Valor must be greater than or equal to 0")
-    .required("Valor is required"),
-  distancia: Yup.number()
-    .min(0, "Distancia must be greater than or equal to 0")
-    .required("Distancia is required"),
-  tempo: Yup.number()
-    .min(0, "Tempo must be greater than or equal to 0")
-    .required("Tempo is required"),
-  status: Yup.number().required("Status is required"),
+  valor: Yup.number().required("Valor is required"),
 });
 
 const Home: NextPage = () => {
   const mutation = useMutation(postViagem);
-  
+
+  const [foodQuantities, setFoodQuantities] = useState<{
+    [key: string]: number;
+  }>({
+    burger: 0,
+    salad: 0,
+  });
+
+  const foodPrices = {
+    burger: 5.99,
+    salad: 8.99,
+  };
 
   return (
     <>
@@ -44,41 +46,19 @@ const Home: NextPage = () => {
             </h1>
             <Formik
               initialValues={{
-                origem: "",
+                
                 destino: "",
-                data: new Date(),
                 valor: 0,
-                distancia: 0,
-                tempo: 0,
-                status: 0,
-                identifier: "",
               }}
               validationSchema={validationSchema}
               onSubmit={(values, actions) => {
-                mutation.mutate(values);
+                mutation.mutate({ ...values, valor: 12 });
                 actions.setSubmitting(false);
               }}
             >
               {({ isSubmitting }) => (
                 <Form className="flex flex-col">
-                  <div className="mb-4">
-                    <label
-                      htmlFor="origem"
-                      className="mb-2 block text-sm font-bold text-gray-700"
-                    >
-                      Origem:
-                    </label>
-                    <Field
-                      id="origem"
-                      name="origem"
-                      placeholder="Origem"
-                      className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                    />
-                    <ErrorMessage
-                      name="origem"
-                      className="text-xs italic text-red-500"
-                    />
-                  </div>
+                 
 
                   <div className="mb-4">
                     <label
@@ -99,113 +79,18 @@ const Home: NextPage = () => {
                     />
                   </div>
 
-                  <div className="mb-4">
-                    <label
-                      htmlFor="data"
-                      className="mb-2 block text-sm font-bold text-gray-700"
-                    >
-                      Data:
-                    </label>
-                    <Field
-                      id="data"
-                      name="data"
-                      placeholder="Data"
-                      type="date"
-                      className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                    />
-                    <ErrorMessage
-                      name="data"
-                      className="text-xs italic text-red-500"
-                    />
-                  </div>
+                  <FoodPicker
+                    foodQuantities={foodQuantities}
+                    setFoodQuantities={setFoodQuantities}
+                  />
 
-                  <div className="mb-4">
-                    <label
-                      htmlFor="valor"
-                      className="mb-2 block text-sm font-bold text-gray-700"
-                    >
-                      Valor:
-                    </label>
-                    <Field
-                      id="valor"
-                      name="valor"
-                      placeholder="Valor"
-                      type="number"
-                      className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                    />
-                    <ErrorMessage
-                      name="valor"
-                      className="text-xs italic text-red-500"
-                    />
-                  </div>
-
-                  <div className="mb-4">
-                    <label
-                      htmlFor="distancia"
-                      className="mb-2 block text-sm font-bold text-gray-700"
-                    >
-                      Distancia:
-                    </label>
-                    <Field
-                      id="distancia"
-                      name="distancia"
-                      placeholder="Distancia"
-                      type="number"
-                      className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                    />
-                    <ErrorMessage
-                      name="distancia"
-                      className="text-xs italic text-red-500"
-                    />
-                  </div>
-
-                  <div className="mb-4">
-                    <label
-                      htmlFor="tempo"
-                      className="mb-2 block text-sm font-bold text-gray-700"
-                    >
-                      Tempo:
-                    </label>
-                    <Field
-                      id="tempo"
-                      name="tempo"
-                      placeholder="Tempo"
-                      type="number"
-                      className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                    />
-                    <ErrorMessage
-                      name="tempo"
-                      className="text-xs italic text-red-500"
-                    />
-                  </div>
-
-                  <div className="mb-4">
-                    <label
-                      htmlFor="status"
-                      className="mb-2 block text-sm font-bold text-gray-700"
-                    >
-                      Status:
-                    </label>
-                    <Field
-                      id="status"
-                      name="status"
-                      placeholder="Status"
-                      type="number"
-                      className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                    />
-                    <ErrorMessage
-                      name="status"
-                      className="text-xs italic text-red-500"
-                    />
-                  </div>
-
-                  <div className="flex items-center  justify-between">
+                  <div className="flex items-center justify-between">
                     <button
                       type="submit"
                       disabled={isSubmitting}
                       className="focus:shadow-outline rounded bg-gradient-to-r from-green-400 to-blue-500 px-4 py-2 font-bold text-white hover:from-pink-500 hover:to-yellow-500 focus:outline-none"
                     >
-                      Criar Viajem
+                      Criar Viagem
                     </button>
                   </div>
                 </Form>
