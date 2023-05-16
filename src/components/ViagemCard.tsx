@@ -17,18 +17,23 @@ interface ViagemCardProps {
 }
 
 export default function ViagemCard({ viagem }: ViagemCardProps): JSX.Element {
+  const queryClient = useQueryClient();
 
-  
-  const deleteMutation = useMutation(deleteViagem);
+  const deleteMutation = useMutation(deleteViagem, {
+    onSuccess() {
+      console.log("foiiiii");
 
-  const endViagemMutation = useMutation(endViagem, {
-    onSuccess(){
-      const x = useQueryClient()
-      x.invalidateQueries("viagens");
-      
-    }
+      queryClient.invalidateQueries({ queryKey: ["viagens"] });
+    },
   });
 
+  const endViagemMutation = useMutation(endViagem, {
+    onSuccess() {
+      console.log("foiiiii");
+
+      // queryClient.invalidateQueries({ queryKey: ["viagens"] });
+    },
+  });
 
   return (
     <div

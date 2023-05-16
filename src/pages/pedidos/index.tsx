@@ -8,7 +8,6 @@ import * as Yup from "yup";
 import FoodPicker from "~/components/FoodPicker";
 
 const validationSchema = Yup.object({
-  
   destino: Yup.string().required("Destino is required"),
   valor: Yup.number().required("Valor is required"),
 });
@@ -22,7 +21,31 @@ const Home: NextPage = () => {
     burger: 0,
     salad: 0,
   });
-  
+
+  const foodPrices = {
+    burger: 5.99,
+    salad: 8.99,
+  };
+
+  const calculateTotalPrice = () => {
+    let total = 0;
+    for (const food in foodQuantities) {
+      // @ts-ignore
+      total += foodQuantities[food] * foodPrices[food];
+    }
+    return total;
+  };
+
+  const necessities = () =>{
+    const foodQuantitiesList: string[] = Object.entries(foodQuantities)
+      .filter(([, quantity]: any) => quantity > 0)
+      .map(([food]) => food);
+
+    const valor = calculateTotalPrice();
+
+    return {foodQuantitiesList, valor}
+  }
+
   return (
     <>
       <Head>
@@ -46,24 +69,26 @@ const Home: NextPage = () => {
               }}
               validationSchema={validationSchema}
               onSubmit={(values, actions) => {
-                // make a list of foods with more than 0 quantity
+                const { foodQuantitiesList, valor } = necessities();
 
-                const foodQuantitiesList: string[] = Object.entries(foodQuantities)
-                  .filter(([, quantity]: any) => quantity > 0)
-                  .map(([food]) => food);
+                mutation.mutate({
+                  ...values,
+                  valor,
+                  items: foodQuantitiesList,
+                });
 
-
-                
-
-
-                mutation.mutate({ ...values, valor: 12, items: foodQuantitiesList });
                 actions.setSubmitting(false);
+                actions.resetForm(); // Reset form fields
+
+                setFoodQuantities({
+                  // Reset food quantities
+                  burger: 0,
+                  salad: 0,
+                });
               }}
             >
               {({ isSubmitting }) => (
                 <Form className="flex flex-col">
-                 
-
                   <div className="mb-4">
                     <label
                       htmlFor="destino"
@@ -87,7 +112,6 @@ const Home: NextPage = () => {
                     foodQuantities={foodQuantities}
                     setFoodQuantities={setFoodQuantities}
                   />
-
                   <div className="flex items-center justify-between">
                     <button
                       type="submit"

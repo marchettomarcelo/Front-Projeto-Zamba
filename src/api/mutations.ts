@@ -7,27 +7,24 @@ interface FormData {
 }
 
 // const url = "http://192.168.10.117:8080/api/viagem"
-const url = "http://localhost:8080/api/viagem"
+const url = "http://localhost:8080/api/viagem";
 
 async function postViagem(values: FormData) {
-
   const body_request = {
-    "destino": values.destino,
-    "valor": values.valor,
-    "origem": "Rua Quatá 200",
-    "distancia": 22,
-    "tempo": 30,
-    "status": 1,
-    "items": values.items,
-  }
+    destino: values.destino,
+    valor: values.valor,
+    origem: "Rua Quatá 200",
+    distancia: 22,
+    tempo: values.valor,
+    status: 1,
+    items: values.items,
+    data: new Date(),
+  };
 
   console.log(body_request);
 
   try {
-    const response = await axios.post(
-      url,
-      body_request
-    );
+    const response = await axios.post(url, body_request);
     console.log(response.data);
     return response.data;
   } catch (error) {
@@ -37,16 +34,17 @@ async function postViagem(values: FormData) {
 
 async function deleteViagem(id: string) {
   // make id a string
-  
+
   const response = await axios.delete(`${url}/${id}`);
-  console.log(response)
+  console.log(response);
   return response.data;
 }
 
 async function endViagem(id: string) {
-  console.log("Acabar com pedidos");
+  const response = await axios.put(`${url}/${id}`);
 
-  return [];
+  console.log(response);
+  return response.data;
 }
 
 export { postViagem, deleteViagem, endViagem };
