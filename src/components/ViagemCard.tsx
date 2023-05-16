@@ -14,6 +14,7 @@ interface ViagemCardProps {
     distancia: number;
     tempo: number;
     status: number;
+    itens: string[];
   };
 }
 
@@ -32,9 +33,23 @@ export default function ViagemCard({ viagem }: ViagemCardProps): JSX.Element {
     onSuccess() {
       console.log("foiiiii");
 
-      // queryClient.invalidateQueries({ queryKey: ["viagens"] });
+      queryClient.invalidateQueries({ queryKey: ["viagens"] });
     },
   });
+
+  const statusConverter = (status: number) => {
+    switch (status) {
+      case -1:
+        return "Erro";
+      case 1:
+        return "Finalizada";
+      case 0:
+        return "Confirmado";
+
+      default:
+        return "Em andamento";
+    }
+  };
 
   return (
     <div
@@ -45,19 +60,36 @@ export default function ViagemCard({ viagem }: ViagemCardProps): JSX.Element {
         <div className="flex flex-col gap-2">
           <div>
             <div className="flex flex-row items-center">
-              De: <span className="text-lg">{viagem.origem}</span>
+              De: <span className="text-lg"> {viagem.origem}</span>
             </div>
             <div className="flex flex-row items-center">
               Para: <span className="text-lg">{viagem.destino}</span>
             </div>
           </div>
-          <div className="flex flex-row items-center justify-between">
+          <div className="flex flex-row items-center justify-between gap-4">
             Valor:{" "}
             <span className="text-md font-bold">{`R$${viagem.valor}`}</span>
             Distância:{" "}
             <span className="text-md font-bold">{`${viagem.distancia}km`}</span>
             Tempo:{" "}
             <span className="text-md font-bold">{`${viagem.tempo}min`}</span>
+            Staus:{" "}
+            <span className="text-md font-bold">{`${statusConverter(
+              viagem.status
+            )}`}</span>
+          </div>
+
+          <div>
+            <h2 className="text-lg font-bold">Itens:</h2>
+            <ul>
+              {viagem.itens.map((item, index) => {
+                return (
+                  <li key={index} className="text-md">
+                    {item.toUpperCase()}
+                  </li>
+                );
+              })}
+            </ul>
           </div>
         </div>
       </div>

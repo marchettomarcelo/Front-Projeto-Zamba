@@ -7,8 +7,8 @@ interface FormData {
   items: string[];
 }
 
-// const url = "http://192.168.10.117:8080/api/viagem"
-const url = "http://localhost:8080/api/viagem";
+const url = "http://192.168.10.117:8080/api/viagem"
+// const url = "http://localhost:8080/api/viagem";
 
 async function postViagem(values: FormData) {
   const body_request = {
@@ -17,10 +17,10 @@ async function postViagem(values: FormData) {
     origem: "Rua Quatá 200",
     distancia: 22,
     tempo: values.valor,
-    status: 1,
-    items: values.items,
+    itens: values.items,
     data: new Date(),
   };
+
 
   console.log(body_request);
 
@@ -42,10 +42,11 @@ async function deleteViagem(id: string) {
 }
 
 async function endViagem(id: string) {
-  const response = await axios.put(`${url}/${id}`);
+  const response = await axios.put(`${url}/confirm/${id}`);
 
   console.log(response);
   return response.data;
 }
+
 
 export { postViagem, deleteViagem, endViagem };
