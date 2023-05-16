@@ -22,12 +22,7 @@ const Home: NextPage = () => {
     burger: 0,
     salad: 0,
   });
-
-  const foodPrices = {
-    burger: 5.99,
-    salad: 8.99,
-  };
-
+  
   return (
     <>
       <Head>
@@ -46,13 +41,22 @@ const Home: NextPage = () => {
             </h1>
             <Formik
               initialValues={{
-                
                 destino: "",
                 valor: 0,
               }}
               validationSchema={validationSchema}
               onSubmit={(values, actions) => {
-                mutation.mutate({ ...values, valor: 12 });
+                // make a list of foods with more than 0 quantity
+
+                const foodQuantitiesList: string[] = Object.entries(foodQuantities)
+                  .filter(([, quantity]: any) => quantity > 0)
+                  .map(([food]) => food);
+
+
+                
+
+
+                mutation.mutate({ ...values, valor: 12, items: foodQuantitiesList });
                 actions.setSubmitting(false);
               }}
             >

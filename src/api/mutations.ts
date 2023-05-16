@@ -3,8 +3,8 @@ import axios from "axios";
 interface FormData {
   destino: string;
   valor: number;
+  items: string[];
 }
-
 
 // const url = "http://192.168.10.117:8080/api/viagem"
 const url = "http://localhost:8080/api/viagem"
@@ -18,7 +18,10 @@ async function postViagem(values: FormData) {
     "distancia": 22,
     "tempo": 30,
     "status": 1,
+    "items": values.items,
   }
+
+  console.log(body_request);
 
   try {
     const response = await axios.post(
@@ -34,7 +37,6 @@ async function postViagem(values: FormData) {
 
 async function deleteViagem(id: string) {
   // make id a string
-
   
   const response = await axios.delete(`${url}/${id}`);
   console.log(response)

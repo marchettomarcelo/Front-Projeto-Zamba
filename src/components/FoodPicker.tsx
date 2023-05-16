@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import FoodItems from "./FoodItems";
-export default function FoodPicker({foodQuantities, setFoodQuantities}: any) {
- 
+import salada from "../images/salada.png";
+import burger from "../images/burger.png";
 
+export default function FoodPicker({ foodQuantities, setFoodQuantities }: any) {
   const foodPrices = {
     burger: 5.99,
     salad: 8.99,
   };
 
   const incrementFood = (food: string) => {
-      // @ts-ignore
+    // @ts-ignore
     setFoodQuantities((prevQuantities) => ({
       ...prevQuantities,
       [food]: (prevQuantities[food] || 0) + 1,
@@ -19,7 +20,7 @@ export default function FoodPicker({foodQuantities, setFoodQuantities}: any) {
   const decrementFood = (food: string) => {
     // @ts-ignore
     if (foodQuantities[food] && foodQuantities[food] > 0) {
-        // @ts-ignore
+      // @ts-ignore
       setFoodQuantities((prevQuantities) => ({
         ...prevQuantities,
 
@@ -40,15 +41,18 @@ export default function FoodPicker({foodQuantities, setFoodQuantities}: any) {
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <FoodItems
-        name="Burgers"
-        count={foodQuantities.burger}
-        price={foodPrices.burger}
-        increment={() => incrementFood("burger")}
-        decrement={() => decrementFood("burger")}
-      />
-      <div className="mt-4">
+      <div className="flex flex-row gap-2">
         <FoodItems
+          image={burger}
+          name="Burgers"
+          count={foodQuantities.burger}
+          price={foodPrices.burger}
+          increment={() => incrementFood("burger")}
+          decrement={() => decrementFood("burger")}
+          />
+
+        <FoodItems
+          image={salada}
           name="Salads"
           count={foodQuantities.salad}
           price={foodPrices.salad}
@@ -57,7 +61,9 @@ export default function FoodPicker({foodQuantities, setFoodQuantities}: any) {
         />
       </div>
       <div className="mt-4">
-        <h2>Total Price: ${calculateTotalPrice()}</h2>
+        <h2 className="bold-lg text-lg">
+          Total Price: ${calculateTotalPrice()}
+        </h2>
       </div>
     </div>
   );
