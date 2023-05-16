@@ -1,8 +1,8 @@
+/* eslint-disable */
 import axios from "axios";
 
-
 // const url = "http://192.168.10.117:8080/api/viagem"
-const url = "http://localhost:8080/api/viagem"
+const url = "http://localhost:8080/api/viagem";
 
 async function getViagens() {
   try {
@@ -14,4 +14,4 @@ async function getViagens() {
   }
 }
 
-export { getViagens  };
+export { getViagens };

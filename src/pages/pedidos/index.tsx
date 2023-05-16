@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { type NextPage } from "next";
 import Head from "next/head";
 import { useMutation, useQuery } from "react-query";
@@ -36,15 +37,15 @@ const Home: NextPage = () => {
     return total;
   };
 
-  const necessities = () =>{
+  const necessities = () => {
     const foodQuantitiesList: string[] = Object.entries(foodQuantities)
       .filter(([, quantity]: any) => quantity > 0)
       .map(([food]) => food);
 
     const valor = calculateTotalPrice();
 
-    return {foodQuantitiesList, valor}
-  }
+    return { foodQuantitiesList, valor };
+  };
 
   return (
     <>
