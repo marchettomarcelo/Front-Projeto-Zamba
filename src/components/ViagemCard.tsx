@@ -15,6 +15,7 @@ interface ViagemCardProps {
     tempo: number;
     status: number;
     itens: string[];
+    idMotorista: string;
   };
 }
 
@@ -77,6 +78,8 @@ export default function ViagemCard({ viagem }: ViagemCardProps): JSX.Element {
             <span className="text-md font-bold">{`${statusConverter(
               viagem.status
             )}`}</span>
+            Motorista:{" "}
+            <span className="text-md font-bold">{`${viagem.idMotorista}`}</span>
           </div>
 
           <div>

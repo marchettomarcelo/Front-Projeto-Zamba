@@ -7,6 +7,7 @@ import React, { useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import FoodPicker from "~/components/FoodPicker";
+import Swal from "sweetalert2";
 
 const validationSchema = Yup.object({
   destino: Yup.string().required("Destino is required"),
@@ -14,7 +15,20 @@ const validationSchema = Yup.object({
 });
 
 const Home: NextPage = () => {
-  const mutation = useMutation(postViagem);
+  const mutation = useMutation(postViagem, {
+    onSuccess() {
+      Swal.fire({
+        title: "Viagem criada com sucesso!",
+        icon: "success",
+        confirmButtonText: "Ok",
+        
+      });
+    },
+    onError() {
+      alert("Erro ao criar viagem!");
+    }
+
+  });
 
   const [foodQuantities, setFoodQuantities] = useState<{
     [key: string]: number;
